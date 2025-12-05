@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <h1>Projet Machine Learning</h1>
+    
+    <style>
+        /* ======== STYLE GLOBAL ======== */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                        url("{{ url_for('static', filename='images/diabete.png') }}") center/cover no-repeat;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            background: rgba(255,255,255,0.15);
+            padding: 40px;
+            border-radius: 15px;
+            width: 450px;
+            backdrop-filter: blur(7px);
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        p {
+            text-align: center;
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        form input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #3a9e43;
+            cursor: pointer;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Suggestions */
+        .tips {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .tips ul {
+            margin-left: -10px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Prédiction du Diabète</h1>
+        <p>Entrez vos informations ci-dessous :</p>
+
+        <form action="/predict" method="post">
+            <input type="number" name="Pregnancies" placeholder="Pregnancies" required>
+            <input type="number" name="Glucose" placeholder="Glucose" required>
+            <input type="number" name="BloodPressure" placeholder="BloodPressure" required>
+            <input type="number" name="SkinThickness" placeholder="SkinThickness" required>
+            <input type="number" name="Insulin" placeholder="Insulin" required>
+            <input type="number" name="BMI" placeholder="BMI" required>
+            <input type="number" name="DiabetesPedigreeFunction" placeholder="DiabetesPedigreeFunction" required>
+            <input type="number" name="Age" placeholder="Age" required>
+            <button type="submit">Prédire</button>
+        </form>
+
+        {% if result %}
+            <div class="result">
+                {{ result }}
+            </div>
+
+            {% if result == "Diabète détecté" %}
+            <div class="tips">
+                <h3>💡 Conseils pour réduire le risque :</h3>
+                <ul>
+                    <li>Adoptez une alimentation équilibrée riche en fibres.</li>
+                    <li>Faites au moins 30 minutes d’activité physique par jour.</li>
+                    <li>Limitez le sucre et les aliments transformés.</li>
+                    <li>Maintenez un poids stable et sain.</li>
+                    <li>Surveillez régulièrement votre glycémie.</li>
+                </ul>
+            </div>
+            {% else %}
+            <div class="tips">
+                <h3>💚 Conseils pour rester en bonne santé :</h3>
+                <ul>
+                    <li>Continuez à pratiquer une activité physique régulière.</li>
+                    <li>Mangez varié : fruits, légumes, fibres, protéines.</li>
+                    <li>Buvez suffisamment d’eau chaque jour.</li>
+                    <li>Évitez les excès de sucre et de boissons gazeuses.</li>
+                    <li>Faites un bilan de santé annuel pour rester rassuré.</li>
+                </ul>
+            </div>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <script>
+        // Petit effet sur bouton
+        document.querySelector("button").addEventListener("click", () => {
+            document.querySelector("button").style.transform = "scale(0.97)";
+            setTimeout(() => {
+                document.querySelector("button").style.transform = "scale(1)";
+            }, 150);
+        });
+    </script>
+
+</body>
+</html>
